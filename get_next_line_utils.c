@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 12:11:14 by hnoguchi          #+#    #+#             */
-/*   Updated: 2022/05/31 19:23:52 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2022/06/01 11:41:01 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,21 +26,21 @@ size_t	ft_strlen(const char *s)
 
 size_t	gnl_strclen(const char *s, int c)
 {
-	ssize_t			i;
+	ssize_t			len;
 	unsigned char	chr;
 
 	if (s == NULL)
 		return (0);
-	i = 0;
+	len = 0;
 	chr = (unsigned char)c;
-	while (s[i] != '\0')
+	while (s[len] != '\0')
 	{
-		if (s[i] == chr)
-			return (i + 1);
-		i += 1;
+		if (s[len] == chr)
+			return (len + 1);
+		len += 1;
 	}
-	if (s[i] == chr)
-		return (i + 1);
+	if (s[len] == chr)
+		return (len + 1);
 	return (0);
 }
 
@@ -50,9 +50,9 @@ static void	*ft_memcpy(void *dst, const void *src, size_t n)
 	unsigned char	*dst_uc;
 	unsigned char	*src_uc;
 
-	if (n == 0 || dst == src)
+	if (dst == NULL || src == NULL)
 		return (dst);
-	if (dst == NULL && src == NULL)
+	if (n == 0 || dst == src)
 		return (dst);
 	i = 0;
 	dst_uc = (unsigned char *)dst;
@@ -71,6 +71,8 @@ void	*gnl_memmove(void *dst, const void *src, size_t len)
 	unsigned char		*dst_uc;
 	unsigned char		*src_uc;
 
+	if (dst == NULL || src == NULL)
+		return (dst);
 	if (dst == src || len == 0)
 		return (dst);
 	i = 1;
@@ -89,22 +91,18 @@ void	*gnl_memmove(void *dst, const void *src, size_t len)
 	return (dst);
 }
 
-char	*gnl_strnjoin(char *s1, char *s2, size_t s1_len, size_t s2_len)
+char	*gnl_strnjoin(char *save, char *buff, size_t s_len, size_t b_len)
 {
 	char	*dst;
 
-	if (s1 == NULL)
-	{
-		s1 = (char *)malloc(1 * sizeof(char *));
-		s1[0] = '\0';
-	}
-	if (s1 == NULL || s2 == NULL)
+	if (buff == NULL)
 		return (NULL);
-	dst = (char *)malloc((s1_len + s2_len + 1) * sizeof(char));
+	dst = (char *)malloc((s_len + b_len + 1) * sizeof(char));
 	if (dst == NULL)
 		return (NULL);
-	(void)gnl_memmove(dst, s1, s1_len);
-	(void)gnl_memmove(&dst[s1_len], s2, s2_len + 1);
-	free(s1);
+	(void)gnl_memmove(dst, save, s_len);
+	(void)gnl_memmove(&dst[s_len], buff, b_len + 1);
+	if (save != NULL)
+		free(save);
 	return (dst);
 }
