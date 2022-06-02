@@ -6,13 +6,13 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 12:11:14 by hnoguchi          #+#    #+#             */
-/*   Updated: 2022/06/01 11:41:01 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2022/06/02 10:04:51 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(const char *s)
+size_t	gnl_strlen(const char *s)
 {
 	size_t	len;
 
@@ -50,9 +50,9 @@ static void	*ft_memcpy(void *dst, const void *src, size_t n)
 	unsigned char	*dst_uc;
 	unsigned char	*src_uc;
 
-	if (dst == NULL || src == NULL)
+	if (dst == src || n == 0)
 		return (dst);
-	if (n == 0 || dst == src)
+	if (dst == NULL && src == NULL)
 		return (dst);
 	i = 0;
 	dst_uc = (unsigned char *)dst;
