@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 12:10:51 by hnoguchi          #+#    #+#             */
-/*   Updated: 2022/06/02 21:40:03 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2022/06/03 11:01:50 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ static char	*gnl_left_str(char *save, size_t s_len, size_t nl_len)
 	if (nl_len != 0)
 		nl_len -= 1;
 	if (save[nl_len] == 0)
-	{
-		free(save);
-		return (NULL);
-	}
+		return (gnl_free_null(save));
 	left_save = (char *)malloc((s_len - nl_len + 1) * sizeof(char));
 	if (left_save == NULL)
 		return (NULL);
@@ -36,7 +33,7 @@ static char	*gnl_left_str(char *save, size_t s_len, size_t nl_len)
 		nl_len += 1;
 	}
 	left_save[i] = '\0';
-	free(save);
+	(void)gnl_free_null(save);
 	return (left_save);
 }
 
@@ -48,18 +45,20 @@ static char	*gnl_get_new_line(char	*save, size_t nl_len)
 		return (NULL);
 	new_line = (char *)malloc((nl_len + 1) * sizeof(char));
 	if (new_line == NULL)
-		return (NULL);
+		return (gnl_free_null(save));
 	new_line = (char *)gnl_memmove(new_line, save, nl_len);
 	new_line[nl_len] = '\0';
 	return (new_line);
 }
 
-static size_t	gnl_add_nline_len(size_t b_nl_len, size_t rd_len)
+static void	gnl_sum_len(size_t *sl, size_t *nl, size_t b_nl, size_t rd_l)
 {
-	if (b_nl_len != 0)
-		return (b_nl_len);
+	sl[0] += rd_l;
+	if (b_nl != 0)
+		nl[0] += b_nl;
 	else
-		return (rd_len);
+		nl[0] += rd_l;
+	return ;
 }
 
 static char	*gnl_read_file(int fd, char *save, size_t *s_len, size_t *nl_len)
@@ -70,24 +69,24 @@ static char	*gnl_read_file(int fd, char *save, size_t *s_len, size_t *nl_len)
 
 	buff = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (buff == NULL)
-		return (NULL);
+		return (gnl_free_null(save));
 	read_byte = 1;
 	b_nl_len = gnl_strclen(save, '\n');
 	while (b_nl_len == 0 && read_byte != 0)
 	{
 		read_byte = read(fd, buff, BUFFER_SIZE);
 		if (read_byte == -1)
-		{
-			free(buff);
-			return (NULL);
-		}
+			break ;
 		buff[read_byte] = '\0';
 		save = gnl_strnjoin(save, buff, s_len[0], (size_t)read_byte);
+		if (save == NULL)
+			break ;
 		b_nl_len = gnl_strclen(buff, '\n');
-		s_len[0] += (size_t)read_byte;
-		nl_len[0] += gnl_add_nline_len(b_nl_len, (size_t)read_byte);
+		gnl_sum_len(s_len, nl_len, b_nl_len, (size_t)read_byte);
 	}
-	free(buff);
+	if (read_byte == -1)
+		(void)gnl_free_null(save);
+	(void)gnl_free_null(buff);
 	return (save);
 }
 
@@ -99,8 +98,8 @@ char	*get_next_line(int fd)
 	size_t		nline_len[1];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	save_len[0] = gnl_strlen(save_str);
+		return (gnl_free_null(save_str));
+	save_len[0] = gnl_strclen(save_str, '\0');
 	nline_len[0] = gnl_strclen(save_str, '\n');
 	if (nline_len[0] == 0)
 		nline_len[0] = save_len[0];

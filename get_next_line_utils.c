@@ -6,42 +6,49 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 12:11:14 by hnoguchi          #+#    #+#             */
-/*   Updated: 2022/06/02 10:04:51 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2022/06/03 10:55:11 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	gnl_strlen(const char *s)
-{
-	size_t	len;
-
-	if (s == NULL)
-		return (0);
-	len = 0;
-	while (s[len] != '\0')
-		len += 1;
-	return (len);
-}
-
 size_t	gnl_strclen(const char *s, int c)
 {
-	ssize_t			len;
+	size_t			len;
 	unsigned char	chr;
 
 	if (s == NULL)
 		return (0);
 	len = 0;
 	chr = (unsigned char)c;
-	while (s[len] != '\0')
+	if (chr == '\0')
 	{
+		while (s[len] != '\0')
+			len += 1;
+		return (len);
+	}
+	else
+	{
+		while (s[len] != '\0')
+		{
+			if (s[len] == chr)
+				return (len + 1);
+			len += 1;
+		}
 		if (s[len] == chr)
 			return (len + 1);
-		len += 1;
+		return (0);
 	}
-	if (s[len] == chr)
-		return (len + 1);
-	return (0);
+}
+
+char	*gnl_free_null(char *s)
+{
+	if (s != NULL)
+	{
+		free(s);
+		s = NULL;
+	}
+	return (NULL);
 }
 
 static void	*ft_memcpy(void *dst, const void *src, size_t n)
@@ -96,10 +103,10 @@ char	*gnl_strnjoin(char *save, char *buff, size_t s_len, size_t b_len)
 	char	*dst;
 
 	if (buff == NULL)
-		return (NULL);
+		return (gnl_free_null(save));
 	dst = (char *)malloc((s_len + b_len + 1) * sizeof(char));
 	if (dst == NULL)
-		return (NULL);
+		return (gnl_free_null(save));
 	(void)gnl_memmove(dst, save, s_len);
 	(void)gnl_memmove(&dst[s_len], buff, b_len + 1);
 	if (save != NULL)
