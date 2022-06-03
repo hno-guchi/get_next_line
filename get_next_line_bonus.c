@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 12:10:51 by hnoguchi          #+#    #+#             */
-/*   Updated: 2022/06/03 14:54:32 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2022/06/03 16:32:04 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ static char	*gnl_left_str(char *save, size_t s_len, size_t nl_len)
 		return (gnl_free_null(save));
 	left_save = (char *)malloc((s_len - nl_len + 1) * sizeof(char));
 	if (left_save == NULL)
-		return (NULL);
+		return (gnl_free_null(save));
+		// return (NULL);
 	nl_len += 1;
 	while (save[nl_len] != '\0')
 	{
@@ -84,9 +85,9 @@ static char	*gnl_read_file(int fd, char *save, size_t *s_len, size_t *nl_len)
 		b_nl_len = gnl_strclen(buff, '\n');
 		gnl_sum_len(s_len, nl_len, b_nl_len, (size_t)read_byte);
 	}
+	(void)gnl_free_null(buff);
 	if (read_byte == -1)
 		(void)gnl_free_null(save);
-	(void)gnl_free_null(buff);
 	return (save);
 }
 
@@ -98,7 +99,8 @@ char	*get_next_line(int fd)
 	size_t		nline_len[1];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (gnl_free_null(save_str[fd]));
+		return (NULL);
+		//return (gnl_free_null(save_str[fd]));
 	save_len[0] = gnl_strclen(save_str[fd], '\0');
 	nline_len[0] = gnl_strclen(save_str[fd], '\n');
 	if (nline_len[0] == 0)

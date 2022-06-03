@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 12:11:14 by hnoguchi          #+#    #+#             */
-/*   Updated: 2022/06/03 12:17:11 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2022/06/03 15:16:35 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,8 @@ char	*gnl_strnjoin(char *save, char *buff, size_t s_len, size_t b_len)
 		return (gnl_free_null(save));
 	(void)gnl_memmove(dst, save, s_len);
 	(void)gnl_memmove(&dst[s_len], buff, b_len + 1);
-	if (save != NULL)
-		free(save);
+	// if (save != NULL)
+	(void)gnl_free_null(save);
+		// free(save);
 	return (dst);
 }
