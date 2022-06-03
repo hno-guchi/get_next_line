@@ -109,7 +109,8 @@ char	*gnl_strnjoin(char *save, char *buff, size_t s_len, size_t b_len)
 		return (gnl_free_null(save));
 	(void)gnl_memmove(dst, save, s_len);
 	(void)gnl_memmove(&dst[s_len], buff, b_len + 1);
-	if (save != NULL)
-		free(save);
+	// if (save != NULL)
+	// 	free(save);
+	(void)gnl_free_null(save);
 	return (dst);
 }
