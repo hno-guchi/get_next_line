@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 12:10:51 by hnoguchi          #+#    #+#             */
-/*   Updated: 2022/06/03 12:26:00 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2022/06/03 14:54:32 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static char	*gnl_read_file(int fd, char *save, size_t *s_len, size_t *nl_len)
 	ssize_t		read_byte;
 	size_t		b_nl_len;
 
-	buff = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
+	buff = (char *)malloc(((size_t)BUFFER_SIZE + 1) * sizeof(char));
 	if (buff == NULL)
 		return (gnl_free_null(save));
 	read_byte = 1;
@@ -92,7 +92,7 @@ static char	*gnl_read_file(int fd, char *save, size_t *s_len, size_t *nl_len)
 
 char	*get_next_line(int fd)
 {
-	static char	*save_str[13046];
+	static char	*save_str[10240];
 	char		*new_line;
 	size_t		save_len[1];
 	size_t		nline_len[1];
