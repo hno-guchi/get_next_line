@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 12:10:51 by hnoguchi          #+#    #+#             */
-/*   Updated: 2022/06/03 12:25:48 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2022/06/03 12:26:00 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*gnl_left_str(char *save, size_t s_len, size_t nl_len)
 {
@@ -92,21 +92,21 @@ static char	*gnl_read_file(int fd, char *save, size_t *s_len, size_t *nl_len)
 
 char	*get_next_line(int fd)
 {
-	static char	*save_str;
+	static char	*save_str[13046];
 	char		*new_line;
 	size_t		save_len[1];
 	size_t		nline_len[1];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (gnl_free_null(save_str));
-	save_len[0] = gnl_strclen(save_str, '\0');
-	nline_len[0] = gnl_strclen(save_str, '\n');
+		return (gnl_free_null(save_str[fd]));
+	save_len[0] = gnl_strclen(save_str[fd], '\0');
+	nline_len[0] = gnl_strclen(save_str[fd], '\n');
 	if (nline_len[0] == 0)
 		nline_len[0] = save_len[0];
-	save_str = gnl_read_file(fd, save_str, save_len, nline_len);
-	if (save_str == NULL)
+	save_str[fd] = gnl_read_file(fd, save_str[fd], save_len, nline_len);
+	if (save_str[fd] == NULL)
 		return (NULL);
-	new_line = gnl_get_new_line(save_str, nline_len[0]);
-	save_str = gnl_left_str(save_str, save_len[0], nline_len[0]);
+	new_line = gnl_get_new_line(save_str[fd], nline_len[0]);
+	save_str[fd] = gnl_left_str(save_str[fd], save_len[0], nline_len[0]);
 	return (new_line);
 }
