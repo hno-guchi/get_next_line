@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 12:10:51 by hnoguchi          #+#    #+#             */
-/*   Updated: 2022/06/03 16:32:04 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2022/06/03 16:42:57 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,12 +93,12 @@ static char	*gnl_read_file(int fd, char *save, size_t *s_len, size_t *nl_len)
 
 char	*get_next_line(int fd)
 {
-	static char	*save_str[10240];
+	static char	*save_str[10241];
 	char		*new_line;
 	size_t		save_len[1];
 	size_t		nline_len[1];
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || 10240 < fd || BUFFER_SIZE <= 0)
 		return (NULL);
 		//return (gnl_free_null(save_str[fd]));
 	save_len[0] = gnl_strclen(save_str[fd], '\0');
