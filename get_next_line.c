@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 12:10:51 by hnoguchi          #+#    #+#             */
-/*   Updated: 2022/06/03 14:14:43 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2022/06/03 17:16:18 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static char	*gnl_left_str(char *save, size_t s_len, size_t nl_len)
 	left_save = (char *)malloc((s_len - nl_len + 1) * sizeof(char));
 	if (left_save == NULL)
 		return (gnl_free_null(save));
-		// return (NULL);
 	nl_len += 1;
 	while (save[nl_len] != '\0')
 	{
@@ -100,7 +99,6 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-		// return (gnl_free_null(save_str));
 	save_len[0] = gnl_strclen(save_str, '\0');
 	nline_len[0] = gnl_strclen(save_str, '\n');
 	if (nline_len[0] == 0)
