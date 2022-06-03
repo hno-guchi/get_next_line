@@ -18,6 +18,7 @@ int	main(int argc, char **argv)
 			if (new_line == NULL)
 				break;
 			printf("%s", new_line);
+			free(new_line);
 		}
 	}
 	else
@@ -27,7 +28,10 @@ int	main(int argc, char **argv)
 		{
 			new_line = get_next_line(fd);
 			printf("%s", new_line);
+			free(new_line);
 		}
 	}
+	// fsleep(30);
+	// system("leaks -q a.out");
 	return (0);
 }
