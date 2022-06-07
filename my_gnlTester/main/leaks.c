@@ -2,7 +2,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <stdio.h>
-#include "../get_next_line.h"
+#include "../../get_next_line.h"
 
 int	main(int argc, char **argv)
 {
@@ -32,6 +32,6 @@ int	main(int argc, char **argv)
 		}
 	}
 	// fsleep(30);
-	// system("leaks -q a.out");
+	system("leaks -q a.out");
 	return (0);
 }
