@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 12:10:51 by hnoguchi          #+#    #+#             */
-/*   Updated: 2022/06/03 17:17:07 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2022/06/09 21:19:52 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ static char	*gnl_left_str(char *save, size_t s_len, size_t nl_len)
 	if (nl_len != 0)
 		nl_len -= 1;
 	if (save[nl_len] == 0)
-		return (gnl_free_null(save));
+		return (gnl_free_null(&save));
 	left_save = (char *)malloc((s_len - nl_len + 1) * sizeof(char));
 	if (left_save == NULL)
-		return (gnl_free_null(save));
+		return (gnl_free_null(&save));
 	nl_len += 1;
 	while (save[nl_len] != '\0')
 	{
@@ -33,7 +33,7 @@ static char	*gnl_left_str(char *save, size_t s_len, size_t nl_len)
 		nl_len += 1;
 	}
 	left_save[i] = '\0';
-	(void)gnl_free_null(save);
+	(void)gnl_free_null(&save);
 	return (left_save);
 }
 
@@ -45,7 +45,7 @@ static char	*gnl_get_new_line(char	*save, size_t nl_len)
 		return (NULL);
 	new_line = (char *)malloc((nl_len + 1) * sizeof(char));
 	if (new_line == NULL)
-		return (gnl_free_null(save));
+		return (gnl_free_null(&save));
 	new_line = (char *)gnl_memmove(new_line, save, nl_len);
 	new_line[nl_len] = '\0';
 	return (new_line);
@@ -69,7 +69,7 @@ static char	*gnl_read_file(int fd, char *save, size_t *s_len, size_t *nl_len)
 
 	buff = (char *)malloc(((size_t)BUFFER_SIZE + 1) * sizeof(char));
 	if (buff == NULL)
-		return (gnl_free_null(save));
+		return (gnl_free_null(&save));
 	read_byte = 1;
 	b_nl_len = gnl_strclen(save, '\n');
 	while (b_nl_len == 0 && read_byte != 0)
@@ -84,9 +84,9 @@ static char	*gnl_read_file(int fd, char *save, size_t *s_len, size_t *nl_len)
 		b_nl_len = gnl_strclen(buff, '\n');
 		gnl_sum_len(s_len, nl_len, b_nl_len, (size_t)read_byte);
 	}
-	(void)gnl_free_null(buff);
+	(void)gnl_free_null(&buff);
 	if (read_byte == -1)
-		(void)gnl_free_null(save);
+		(void)gnl_free_null(&save);
 	return (save);
 }
 

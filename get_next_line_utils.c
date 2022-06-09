@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 12:11:14 by hnoguchi          #+#    #+#             */
-/*   Updated: 2022/06/03 17:17:32 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2022/06/09 18:36:41 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ size_t	gnl_strclen(const char *s, int c)
 	}
 }
 
-char	*gnl_free_null(char *s)
+char	*gnl_free_null(char **s)
 {
-	if (s != NULL)
+	if (s[0] != NULL)
 	{
-		free(s);
-		s = NULL;
+		free(s[0]);
+		s[0] = NULL;
 	}
 	return (NULL);
 }
@@ -103,12 +103,12 @@ char	*gnl_strnjoin(char *save, char *buff, size_t s_len, size_t b_len)
 	char	*dst;
 
 	if (buff == NULL)
-		return (gnl_free_null(save));
+		return (gnl_free_null(&save));
 	dst = (char *)malloc((s_len + b_len + 1) * sizeof(char));
 	if (dst == NULL)
-		return (gnl_free_null(save));
+		return (gnl_free_null(&save));
 	(void)gnl_memmove(dst, save, s_len);
 	(void)gnl_memmove(&dst[s_len], buff, b_len + 1);
-	(void)gnl_free_null(save);
+	(void)gnl_free_null(&save);
 	return (dst);
 }
